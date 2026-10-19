@@ -69,7 +69,11 @@ SELECT pg_sleep(20);
       if(($active -join '').Trim() -eq '1'){$observed=$true;break}
       Start-Sleep -Milliseconds 500
     }
-    if(-not $observed){throw 'Could not observe live writer backend'}
+    if(-not $observed){
+      $jobState=[string]$holdJob.State
+      $writerOutput=@(Receive-Job $holdJob -Keep -ErrorAction SilentlyContinue 2>&1)
+      throw "Could not observe live writer backend (job=$jobState; writer=$($writerOutput -join ' | '))"
+    }
     $test=@(& $psql -X -w -A -t -h 127.0.0.1 -p $PgPort -U postgres -d postgres -v ON_ERROR_STOP=1 -c "SELECT count(*) FROM pgv_list() WHERE package='pgextwin_session' AND name='session_hold'" 2>&1)
     if($LASTEXITCODE -ne 0 -or ($test -join '').Trim() -ne '0'){throw "Session value leaked to concurrent backend: $($test -join ' ')"}
     Write-Host 'PASS: variable retained in active writer but invisible in concurrent second session'
