@@ -50,10 +50,10 @@ try{
 \set ON_ERROR_STOP on
 SET application_name = 'pgextwin_pg_variables_hold';
 SELECT pgv_set('pgextwin_session','session_hold',4242);
-DO $ BEGIN
+DO $pgextwin$ BEGIN
  IF pgv_get('pgextwin_session','session_hold',NULL::integer) <> 4242
  THEN RAISE EXCEPTION 'Writer backend failed to keep variable'; END IF;
-END $;
+END $pgextwin$;
 SELECT pg_sleep(20);
 '@ | Set-Content $holdSql -Encoding utf8
     $psql=Join-Path $bin 'psql.exe'
