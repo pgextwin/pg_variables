@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "kind": "FIRST_RELEASE_PINNED_SOURCE",
+  "repository": "pgextwin/pg_variables",
+  "extension": "pg_variables",
+  "releasePolicy": "manual-only",
+  "candidateId": "8b4250f0e66e1aabf605",
+  "source": {
+    "repository": "postgrespro/pg_variables",
+    "ref": "v1.2.1",
+    "version": "1.2.1",
+    "commit": "1d1bfe26a5e2eec6dda761565e1307d679b1072b"
+  }
+}
